@@ -1,4 +1,4 @@
-module gitlab.pratted.com/pratted/pgatour-api
+module github.com/Pratted/pgatour-api
 
 go 1.17
 
