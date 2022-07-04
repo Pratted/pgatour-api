@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  # Dummy path to for compatibility with oapi-codegen
+  /tmp:
+    post:
+      responses:
+        '200':
+          description: Ok
+components:
+  # Nested schemas should be defined in their own schema so the codegen
+  # tool can create a corresponding go struct.
+  schemas:
+    Leaderboard:
+      type: object
+      required:
+        - currentRoundNumber
+        - roundStatus
+        - year
+      properties:
+        currentRoundNumber:
+          type: integer
+        roundStatus:
+          type: string
+        year:
+          type: string
+
+    Schedule:
+      type: object
+      required:
+        - tourCode
+        - tournaments
+      properties:
+        tourCode:
+          type: string
+        tournaments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledTournament'
+
+    PgaTourScheduleV2:
+      type: object
+      required:
+        - year
+        - tourSchedules
+      properties:
+        year:
+          type: string
+        tourSchedules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+
+    TournamentName:
+      type: object
+      required:
+        - official
+        - long
+        - medium
+        - short
+      properties:
+        official:
+          type: string
+        long:
+          type: string
+        medium:
+          type: string
+        short:
+          type: string
+
+    TournamentDate:
+      type: object
+      required:
+        - startDate
+        - endDate
+        - weekNumber
+      properties:
+        startDate:
+          type: string
+        endDate:
+          type: string
+        weekNumber:
+          type: string
+
+    ScheduledTournament:
+      type: object
+      required:
+        - tournamentId
+        - tournamentName
+        - tournamentDate
+        - courses
+      properties:
+        tournamentId:
+          type: string
+        tournamentName:
+          $ref: '#/components/schemas/TournamentName'
+        tournamentDate:
+          $ref: '#/components/schemas/TournamentDate'
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+
+    TournamentStatus:
+      type: object
+      required:
+        - lastUpdated
+        - tournamentId
+        - tourCode
+        - seasonYear
+        - courseNumber
+        - currentRound
+        - roundStatus
+        - totalRounds
+      properties:
+        lastUpdated:
+          type: string
+        tournamentId:
+          type: string
+        tourCode:
+          type: string
+        seasonYear:
+          type: string
+        courseNumber:
+          type: string
+        currentRound:
+          type: string
+        roundStatus:
+          type: string
+        totalRounds:
+          type: string
+
+    Course:
+      type: object
+      required:
+        - isHost
+        - courseNumber
+        - state
+        - city
+        - country
+        - courseName
+      properties:
+        isHost:
+          type: boolean
+          example: true
+        courseNumber:
+          type: string
+          example: 552
+        state:
+          type: string
+          example: CA
+        city:
+          type: string
+          example: Napa
+        country:
+          type: string
+          example: USA
+        courseName:
+          type: string
+          example: Silverado Resort and Spa North
+
+    Tournament:
+      type: object
+      required:
+        - tournamentId
+        - tournamentName
+        - tournamentDate
+        - courses
+        - status
+        - leaderboard
+      properties:
+        tournamentId:
+          type: string
+        tournamentName:
+          $ref: '#/components/schemas/TournamentName'
+        tournamentDate:
+          $ref: '#/components/schemas/TournamentDate'
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        status:
+          $ref: '#/components/schemas/TournamentStatus'
+        leaderboard:
+          $ref: '#/components/schemas/Leaderboard'

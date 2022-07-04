@@ -1,0 +1,24 @@
+default:
+  image: pratted-golang:1.17-stretch
+
+stages:
+  - build
+  - test
+
+build-job:
+  stage: build
+  tags:
+    - golang
+  script:
+    - echo "Compiling the code..."
+    - go fmt gitlab.pratted.com/pratted/pgatour-api/...
+    - go mod tidy
+    - echo "Compile complete."
+
+unit-test-job:
+  stage: test
+  tags:
+    - golang
+  script:
+    - echo "Running unit tests... This will take about 60 seconds."
+    - go test -cover -v ./...
